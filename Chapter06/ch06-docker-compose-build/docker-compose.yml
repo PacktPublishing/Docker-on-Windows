@@ -1,0 +1,102 @@
+version: '3.3'
+
+services:
+  
+  message-queue:
+    image: nats:nanoserver
+    networks:
+      - nd-net
+
+  elasticsearch:
+    image: sixeyed/elasticsearch:nanoserver
+    environment: 
+     - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    volumes:
+      - es-data:c:\data
+    networks:
+      - nd-net
+
+  nerd-dinner-db:
+    image: dockeronwindows/ch06-nerd-dinner-db
+    build:
+      context: ../ch06-nerd-dinner-db
+      dockerfile: ./Dockerfile
+    env_file:
+      - db-credentials.env
+    volumes:
+      - db-data:C:\data
+    networks:
+      - nd-net
+
+  kibana:
+    image: sixeyed/kibana:nanoserver
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - nd-net
+
+  nerd-dinner-save-handler:
+    image: dockeronwindows/ch05-nerd-dinner-save-handler
+    build:
+      context: ../../ch05
+      dockerfile: ./ch05-nerd-dinner-save-handler/Dockerfile
+    depends_on:
+      - nerd-dinner-db
+      - message-queue
+    env_file:
+      - db-credentials.env
+    networks:
+      - nd-net
+
+  nerd-dinner-index-handler:
+    image: dockeronwindows/ch05-nerd-dinner-index-handler
+    build:
+      context: ../../ch05
+      dockerfile: ./ch05-nerd-dinner-index-handler/Dockerfile
+    depends_on:
+      - elasticsearch
+      - message-queue
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - MESSAGE_QUEUE_URL=nats://message-queue:4222
+    networks:
+      - nd-net
+
+  nerd-dinner-homepage:
+    image: dockeronwindows/ch03-nerd-dinner-homepage
+    build:
+      context: ../../ch03/ch03-nerd-dinner-homepage
+      dockerfile: ./Dockerfile
+    networks:
+      - nd-net
+
+  nerd-dinner-web:
+    image: dockeronwindows/ch05-nerd-dinner-web
+    build:
+      context: ../../ch05/ch05-nerd-dinner-web
+      dockerfile: ./Dockerfile
+    ports:
+      - "80:80"
+    environment: 
+      - HOMEPAGE_URL=http://nerd-dinner-homepage
+      - MESSAGE_QUEUE_URL=nats://message-queue:4222
+    env_file:
+      - api-keys.env
+      - db-credentials.env
+    depends_on:
+      - nerd-dinner-homepage
+      - nerd-dinner-db
+      - message-queue
+    networks:
+      - nd-net
+
+networks:
+  nd-net:
+    external:
+      name: nat
+
+volumes:
+  es-data:
+  db-data:
