@@ -36,6 +36,3 @@ RUN Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manag
 * [Docker Networking Cookbook](https://www.packtpub.com/networking-and-servers/docker-networking-cookbook?utm_source=github&utm_medium=repository&utm_campaign=9781786461148)
 
 * [Docker: Creating Structured Containers](https://www.packtpub.com/virtualization-and-cloud/docker-creating-structured-containers?utm_source=github&utm_medium=repository&utm_campaign=9781786465931)
-
-### Suggestions and Feedback
-[Click here](https://docs.google.com/forms/d/e/1FAIpQLSe5qwunkGf6PUvzPirPDtuy1Du5Rlzew23UBp2S-P3wB-GcwQ/viewform) if you have any feedback or suggestions.
