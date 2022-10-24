@@ -36,3 +36,7 @@ RUN Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manag
 * [Docker Networking Cookbook](https://www.packtpub.com/networking-and-servers/docker-networking-cookbook?utm_source=github&utm_medium=repository&utm_campaign=9781786461148)
 
 * [Docker: Creating Structured Containers](https://www.packtpub.com/virtualization-and-cloud/docker-creating-structured-containers?utm_source=github&utm_medium=repository&utm_campaign=9781786465931)
+### Download a free PDF
+
+ <i>If you have already purchased a print or Kindle version of this book, you can get a DRM-free PDF version at no cost.<br>Simply click on the link to claim your free PDF.</i>
+<p align="center"> <a href="https://packt.link/free-ebook/9781785281655">https://packt.link/free-ebook/9781785281655 </a> </p>
